@@ -21,7 +21,7 @@ def main():
   lora_config = LoraConfig(
     r=8,
     lora_alpha=16,
-    target_modules=["c_attn", "c_fc", "c_proj"],  # for GPT-2
+    target_modules=["c_attn", "c_fc", "c_proj"],
     lora_dropout=0.05,
     bias="none",
     task_type="CAUSAL_LM",
@@ -88,11 +88,9 @@ def main():
 
     decoded = tokenizer.decode(out[0], skip_special_tokens=False)
 
-    # assistant-only slice
     reply = decoded.split("### Assistant:")[-1]
     reply = reply.split("<|end|>")[0].strip()
 
-    # trim roughly to first sentence
     for sep in [".", "!", "?"]:
         if sep in reply:
             reply = reply.split(sep, 1)[0] + sep
@@ -100,7 +98,6 @@ def main():
 
     reply = reply.strip()
 
-    # ultra-simple safety / sanity clamp
     banned = [
         "attack", "disorder", "schizophren", "bipolar", "diagnos",
         "self-harm", "suicide", "kill", "stupid", "crazy", "mentally ill",
